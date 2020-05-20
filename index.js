@@ -10,15 +10,15 @@ const path = require('path')
 const errorhandler = require('errorhandler')
 require('es7-object-polyfill')
 
-
-AWS.config.update({
+const config = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'key',
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'secret',
   endpoint: process.env.SQS_ENDPOINT || 'http://localhost:9324',
   sslEnabled: process.env.SQS_ENDPOINT && process.env.SQS_ENDPOINT.indexOf('https://') === 0,
   region: process.env.AWS_REGION || 'us-east-1'
-})
-const sqs = new AWS.SQS()
+}
+
+const sqs = new AWS.SQS(config)
 
 app.set('json spaces', 2)
 app.set('view engine', 'ejs')
@@ -50,7 +50,7 @@ app.get('/queues/:QueueName', async (req, res, next) => {
   try{
     const {QueueUrl} = await sqs.getQueueUrl({QueueName}).promise()
     const {Attributes} = await sqs.getQueueAttributes({QueueUrl, AttributeNames: ['All']}).promise()
-    const {Messages} = await sqs.receiveMessage({QueueUrl, AttributeNames: ['All'], MaxNumberOfMessages: 10}).promise()
+    const {Messages} = await sqs.receiveMessage({QueueUrl, AttributeNames: ['All'], MaxNumberOfMessages: 10, VisibilityTimeout: 0}).promise()
     res.render('messages', {Queue: {QueueName, Attributes, Messages}})
   }catch(err){
     next(err)

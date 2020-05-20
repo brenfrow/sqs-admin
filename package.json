@@ -21,7 +21,7 @@
     "url": "https://github.com/aaronshaf/sqs-admin/issues"
   },
   "dependencies": {
-    "aws-sdk": "^2.5.0",
+    "aws-sdk": "^2.680.0",
     "ejs": "^2.5.1",
     "errorhandler": "^1.4.3",
     "es6-promisify": "^4.1.0",

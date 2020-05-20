@@ -1,8 +1,7 @@
-FROM mhart/alpine-node:6.4.0
+FROM node:12.16.0
 
 ADD . .
 
-RUN npm install
+RUN npm i
 
-EXPOSE 8001
 CMD ["node", "index.js"]
